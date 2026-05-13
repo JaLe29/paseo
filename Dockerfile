@@ -13,6 +13,8 @@ RUN groupadd --system --gid 1001 app \
 
 USER app
 
+EXPOSE 6767
+
 # Spouštěcí skript:
 # 1. Spustí paseo (aby se provedlo při startu)
 # 2. Pak spustí nekonečné čekání, které udrží kontejner naživu
