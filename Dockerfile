@@ -15,7 +15,7 @@ RUN groupadd --system --gid 1001 app \
 
 USER app
 
-EXPOSE 6767
+EXPOSE 6666
 
-# Paseo daemon naslouchá jen na 127.0.0.1, socat přeposílá provoz z 0.0.0.0:6767
-ENTRYPOINT ["/bin/sh", "-c", "paseo && socat TCP-LISTEN:6767,bind=0.0.0.0,fork TCP:127.0.0.1:6767"]
+# Paseo daemon naslouchá jen na 127.0.0.1:6767, socat přeposílá provoz z 0.0.0.0:6666
+ENTRYPOINT ["/bin/sh", "-c", "paseo && socat TCP-LISTEN:6666,bind=0.0.0.0,fork TCP:127.0.0.1:6767"]
