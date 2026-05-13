@@ -3,6 +3,8 @@ FROM node:20-slim
 # Instalace Paseo a Claude Code (globální CLI; příkaz `claude` v PATH)
 RUN npm install -g @getpaseo/cli @anthropic-ai/claude-code
 
+RUN apt-get update && apt-get install -y socat && rm -rf /var/lib/apt/lists/*
+
 # Vytvoření pracovního adresáře
 WORKDIR /app
 
@@ -15,7 +17,5 @@ USER app
 
 EXPOSE 6767
 
-# Spouštěcí skript:
-# 1. Spustí paseo (aby se provedlo při startu)
-# 2. Pak spustí nekonečné čekání, které udrží kontejner naživu
-ENTRYPOINT ["/bin/sh", "-c", "paseo && tail -f /dev/null"]
+# Paseo daemon naslouchá jen na 127.0.0.1, socat přeposílá provoz z 0.0.0.0:6767
+ENTRYPOINT ["/bin/sh", "-c", "paseo && socat TCP-LISTEN:6767,bind=0.0.0.0,fork TCP:127.0.0.1:6767"]
